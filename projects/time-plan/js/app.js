@@ -6,7 +6,13 @@ const db = {
   sessions: []
 };
 
-let currentDate = new Date().toISOString().slice(0, 10);
+function todayStr() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+let currentDate = todayStr();
 
 function load() {
   try {
@@ -246,7 +252,12 @@ Object.assign(window, {
   deleteSlot,
   toggleSession,
   getSlotsByDate,
-  getStreak
+  getStreak,
+  todayStr
 });
 
 init();
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { db, todayStr, reserveSlot, getStreak, addSlot, deleteSlot, toggleSession, save, load, escapeHTML, getSlotsByDate };
+}
