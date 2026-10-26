@@ -30,8 +30,12 @@ self.addEventListener('fetch', event => {
     caches.match(event.request)
       .then(response => {
         if (response) return response;
-        return fetch(event.request)
-          .catch(() => caches.match('./index.html'));
+        // navigation requests offline → fallback to app shell (index.html)
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+        // asset requests offline → fail gracefully, do not return HTML
+        return new Response('', { status: 404, statusText: 'Not Found' });
       })
   );
 });
