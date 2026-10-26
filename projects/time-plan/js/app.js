@@ -167,7 +167,7 @@ function renderHome() {
 
   if (targetEl) targetEl.textContent = db.targetMinutes + ' นาที';
 
-  const todaySlots = getSlotsByDate(currentDate);
+  const todaySlots = getSlotsByDate(todayStr());
   if (slotsEl) {
     if (todaySlots.length === 0) {
       slotsEl.innerHTML = '<span class="empty-state">ยังไม่มีช่วงเวลาสำหรับวันนี้</span>';
