@@ -7,7 +7,10 @@ const db = {
 };
 
 function todayStr() {
-  const d = new Date();
+  return toLocalDateStr(new Date());
+}
+
+function toLocalDateStr(d) {
   const pad = n => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
@@ -50,11 +53,15 @@ function addSlot(date, startTime, endTime, label, type) {
     date,
     startTime,
     endTime,
-    label: escapeHTML(label),
+    label,
     type
   };
   db.slots.push(slot);
-  save();
+  if (!save()) {
+    alert('บันทึกไม่สำเร็จ ที่เก็บข้อมูลเต็มหรือถูกบล็อก');
+    db.slots.pop();
+    return null;
+  }
   return slot;
 }
 
@@ -65,29 +72,34 @@ function reserveSlot(date, startTime, endTime, label) {
       return false;
     }
   }
-  return addSlot(date, startTime, endTime, label, 'ออกกำลังกาย');
+  const slot = addSlot(date, startTime, endTime, label, 'ออกกำลังกาย');
+  return slot ? slot : false;
 }
 
 function deleteSlot(id) {
   db.slots = db.slots.filter(s => s.id !== id);
   db.sessions = db.sessions.filter(s => s.slotId !== id);
-  save();
+  if (!save()) {
+    alert('บันทึกไม่สำเร็จ ที่เก็บข้อมูลเต็มหรือถูกบล็อก');
+  }
 }
 
 function toggleSession(slotId) {
   const existing = db.sessions.find(s => s.slotId === slotId);
   if (existing) {
     existing.done = !existing.done;
-    existing.doneAt = existing.done ? new Date().toISOString() : null;
+    existing.doneAt = existing.done ? toLocalDateStr(new Date()) : null;
   } else {
     db.sessions.push({
       id: 'sess_' + Date.now(),
       slotId,
       done: true,
-      doneAt: new Date().toISOString()
+      doneAt: toLocalDateStr(new Date())
     });
   }
-  save();
+  if (!save()) {
+    alert('บันทึกไม่สำเร็จ ที่เก็บข้อมูลเต็มหรือถูกบล็อก');
+  }
 }
 
 function getSlotsByDate(date) {
@@ -109,7 +121,7 @@ function getStreak() {
   for (let i = 0; i < 365; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().slice(0, 10);
+    const dateStr = toLocalDateStr(d);
     if (doneDates.has(dateStr)) {
       streak++;
     } else {
@@ -185,7 +197,10 @@ function setTarget() {
     return;
   }
   db.targetMinutes = val;
-  save();
+  if (!save()) {
+    alert('บันทึกไม่สำเร็จ ที่เก็บข้อมูลเต็มหรือถูกบล็อก');
+    return;
+  }
   renderTarget();
   renderHome();
 }
@@ -259,5 +274,5 @@ Object.assign(window, {
 init();
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { db, todayStr, reserveSlot, getStreak, addSlot, deleteSlot, toggleSession, save, load, escapeHTML, getSlotsByDate };
+  module.exports = { db, todayStr, toLocalDateStr, reserveSlot, getStreak, addSlot, deleteSlot, toggleSession, save, load, escapeHTML, getSlotsByDate };
 }
