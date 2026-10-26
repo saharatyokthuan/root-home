@@ -96,27 +96,44 @@ function reserveSlot(date, startTime, endTime, label) {
 }
 
 function deleteSlot(id) {
+  const oldSlots = db.slots;
+  const oldSessions = db.sessions;
   db.slots = db.slots.filter(s => s.id !== id);
   db.sessions = db.sessions.filter(s => s.slotId !== id);
   if (!save()) {
+    db.slots = oldSlots;
+    db.sessions = oldSessions;
     alert('บันทึกไม่สำเร็จ ที่เก็บข้อมูลเต็มหรือถูกบล็อก');
   }
 }
 
 function toggleSession(slotId) {
   const existing = db.sessions.find(s => s.slotId === slotId);
+  let oldDone, oldDoneAt, wasNew, newSess;
+
   if (existing) {
+    oldDone = existing.done;
+    oldDoneAt = existing.doneAt;
     existing.done = !existing.done;
     existing.doneAt = existing.done ? toLocalDateStr(new Date()) : null;
   } else {
-    db.sessions.push({
+    newSess = {
       id: 'sess_' + Date.now(),
       slotId,
       done: true,
       doneAt: toLocalDateStr(new Date())
-    });
+    };
+    db.sessions.push(newSess);
+    wasNew = true;
   }
+
   if (!save()) {
+    if (existing) {
+      existing.done = oldDone;
+      existing.doneAt = oldDoneAt;
+    } else if (wasNew) {
+      db.sessions.pop();
+    }
     alert('บันทึกไม่สำเร็จ ที่เก็บข้อมูลเต็มหรือถูกบล็อก');
   }
 }
