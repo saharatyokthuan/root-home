@@ -31,3 +31,26 @@
 ## การเก็บข้อมูล
 
 ข้อมูลทั้งหมดเก็บใน `localStorage` ของเบราว์เซอร์เครื่องนั้นเท่านั้น การล้างข้อมูลเบราว์เซอร์จะลบข้อมูลทั้งหมด
+
+## การทดสอบ
+
+รันทดสอบทั้งหมด (จำลองสภาพแวดล้อมเบราว์เซอร์ใน Node):
+
+```bash
+cd projects/time-plan
+node test/run.js
+```
+
+หรือรันทีละไฟล์:
+
+```bash
+node test/01-today-str.test.js
+node test/07-overlap.test.js
+```
+
+## การยืนยันออฟไลน์ (PWA)
+
+1. เปิดผ่าน local server: `python3 -m http.server 8000` แล้วเปิด `http://localhost:8000/projects/time-plan/index.html`
+2. เปิด DevTools → Application → Service Workers ตรวจว่า `sw.js` ทำงานอยู่
+3. ปิดเครือข่าย (Offline) แล้วโหลดหน้าใหม่ แอปควรยังแสดงผลจากแคชได้
+4. ติดตั้งบนมือถือ: เปิดใน Chrome แล้วเลือก "เพิ่มไปยังหน้าจอหลัก" (Add to Home Screen)
