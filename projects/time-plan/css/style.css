@@ -172,11 +172,6 @@ h2 {
 }
 
 @media (min-width: 600px) {
-  body {
-    display: flex;
-    flex-direction: column;
-  }
-
   .main {
     max-width: 600px;
     margin: 0 auto;

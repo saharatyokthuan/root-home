@@ -47,7 +47,26 @@ function escapeHTML(str) {
   return div.innerHTML;
 }
 
+function validateTime(timeStr) {
+  if (typeof timeStr !== 'string' || timeStr.length !== 5) return false;
+  if (!/^\d{2}:\d{2}$/.test(timeStr)) return false;
+  const [hh, mm] = timeStr.split(':').map(Number);
+  return hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59;
+}
+
 function addSlot(date, startTime, endTime, label, type) {
+  // Business rule: จอง "ออกกำลังกาย" ก่อนกิจกรรมอื่นในวันเดียวกัน
+  // ถ้าวันนั้นมี slot type "ออกกำลังกาย" อยู่แล้ว ไม่อนุญาตให้จองประเภทอื่นในวันเดียวกัน
+  if (type !== 'ออกกำลังกาย') {
+    const hasExerciseSlot = db.slots.some(
+      s => s.date === date && s.type === 'ออกกำลังกาย'
+    );
+    if (hasExerciseSlot) {
+      alert('วันนี้มีช่วงเวลาออกกำลังกายจองไว้แล้ว ไม่สามารถจองกิจกรรมอื่นเพิ่มได้');
+      return null;
+    }
+  }
+
   const slot = {
     id: 'slot_' + Date.now(),
     date,
@@ -236,8 +255,16 @@ function addSlotUI() {
   }
   const startTime = prompt('เวลาเริ่มต้น (เช่น 07:00)');
   if (!startTime) return;
+  if (!validateTime(startTime)) {
+    alert('เวลาเริ่มต้นไม่ถูกต้อง กรุณาระบุในรูปแบบ HH:MM (เช่น 07:00)');
+    return;
+  }
   const endTime = prompt('เวลาสิ้นสุด (เช่น 08:00)');
   if (!endTime) return;
+  if (!validateTime(endTime)) {
+    alert('เวลาสิ้นสุดไม่ถูกต้อง กรุณาระบุในรูปแบบ HH:MM (เช่น 08:00)');
+    return;
+  }
   const label = prompt('ชื่อกิจกรรม (เช่น วิ่งเช้า)');
   if (!label) return;
 
@@ -274,5 +301,5 @@ Object.assign(window, {
 init();
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { db, todayStr, toLocalDateStr, reserveSlot, getStreak, addSlot, deleteSlot, toggleSession, save, load, escapeHTML, getSlotsByDate };
+  module.exports = { db, todayStr, toLocalDateStr, reserveSlot, getStreak, addSlot, deleteSlot, toggleSession, save, load, escapeHTML, getSlotsByDate, validateTime };
 }
