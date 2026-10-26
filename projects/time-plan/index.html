@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>แผนเวลา — Time Plan</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>แผนเวลา</h1>
+    <p class="subtitle">วางแผนออกกำลังกายรายวัน</p>
+  </header>
+
+  <nav class="sidebar">
+    <button class="nav-btn active" onclick="showPage('page-home', this)">หน้าแรก</button>
+    <button class="nav-btn" onclick="showPage('page-target', this)">เป้าหมายต่อวัน</button>
+    <button class="nav-btn" onclick="showPage('page-schedule', this)">ตารางรายวัน</button>
+  </nav>
+
+  <main class="main">
+    <!-- หน้าแรก -->
+    <section class="page" id="page-home">
+      <h2>หน้าแรก</h2>
+      <div class="card" id="card-target">
+        <h3>เป้าหมายวันนี้</h3>
+        <p id="home-target">— นาที</p>
+      </div>
+      <div class="card" id="card-schedule">
+        <h3>ช่วงเวลาวันนี้</h3>
+        <div id="home-slots">ยังไม่มีข้อมูล</div>
+      </div>
+      <div class="card" id="card-streak">
+        <h3>สตรีคต่อเนื่อง</h3>
+        <p id="home-streak">0 วัน</p>
+      </div>
+    </section>
+
+    <!-- ตั้งค่าเป้าหมาย -->
+    <section class="page" id="page-target">
+      <h2>เป้าหมายออกกำลังกายต่อวัน</h2>
+      <div class="form-group">
+        <label for="target-input">นาทีต่อวัน</label>
+        <input type="number" id="target-input" min="5" max="180" step="5" value="30" />
+      </div>
+      <button class="btn-primary" onclick="setTarget()">บันทึก</button>
+      <p id="target-current">ค่าปัจจุบัน: 30 นาที</p>
+    </section>
+
+    <!-- ตารางรายวัน -->
+    <section class="page" id="page-schedule">
+      <h2>ตารางรายวัน</h2>
+      <div class="form-group">
+        <label for="date-picker">เลือกวันที่</label>
+        <input type="date" id="date-picker" />
+      </div>
+      <button class="btn-primary" onclick="addSlotUI()">เพิ่มช่วงเวลา</button>
+      <div id="schedule-list">ยังไม่มีข้อมูล</div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log('Service Worker registered'))
+        .catch(err => console.log('SW registration failed:', err));
+    }
+  </script>
+</body>
+</html>
