@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รายการทั้งหมด · ฟินานซ์ส่วนตัว</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>รายการทั้งหมด</h1>
+  <div class="subtitle">บันทึกและดูรายรับ-รายจ่ายทั้งหมด</div>
+</header>
+
+<nav class="sidebar">
+  <button class="nav-btn" onclick="navTo('index')">หน้าแรก</button>
+  <button class="nav-btn active" onclick="navTo('transactions')">รายการทั้งหมด</button>
+  <button class="nav-btn" onclick="navTo('categories')">หมวดหมู่</button>
+  <button class="nav-btn" onclick="navTo('settings')">ตั้งค่า</button>
+</nav>
+
+<main>
+  <div class="card">
+    <h2>เพิ่มรายการใหม่</h2>
+    <div class="form-group">
+      <label for="txType">ประเภท</label>
+      <select id="txType">
+        <option value="expense">รายจ่าย</option>
+        <option value="income">รายรับ</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="txAmount">จำนวนเงิน (บาท)</label>
+      <input type="number" id="txAmount" min="0" step="0.01" placeholder="เช่น 150.00" />
+    </div>
+    <div class="form-group">
+      <label for="txCategory">หมวดหมู่</label>
+      <select id="txCategory"></select>
+    </div>
+    <div class="form-group">
+      <label for="txDate">วันที่</label>
+      <input type="date" id="txDate" />
+    </div>
+    <div class="form-group">
+      <label for="txNote">หมายเหตุ</label>
+      <input type="text" id="txNote" placeholder="เช่น ค่ากาแฟ, เงินเดือน" />
+    </div>
+    <button class="btn btn-primary" onclick="addTx()">บันทึกรายการ</button>
+  </div>
+
+  <div class="card">
+    <h2>ประวัติรายการ</h2>
+    <div class="form-group" style="margin-bottom:0.5rem;">
+      <label for="filterMonth">กรองตามเดือน</label>
+      <input type="month" id="filterMonth" />
+    </div>
+    <table id="txTable">
+      <thead>
+        <tr>
+          <th>วันที่</th>
+          <th>หมวดหมู่</th>
+          <th>จำนวน</th>
+          <th>หมายเหตุ</th>
+          <th style="text-align:center;">ลบ</th>
+        </tr>
+      </thead>
+      <tbody id="txBody"></tbody>
+    </table>
+    <div id="txEmpty" class="empty" style="display:none;">ยังไม่มีรายการในเดือนนี้</div>
+  </div>
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/transactions.js"></script>
+</body>
+</html>

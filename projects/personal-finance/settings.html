@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตั้งค่า · ฟินานซ์ส่วนตัว</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>ตั้งค่า</h1>
+  <div class="subtitle">สำรองและกู้คืนข้อมูลการเงินของคุณ</div>
+</header>
+
+<nav class="sidebar">
+  <button class="nav-btn" onclick="navTo('index')">หน้าแรก</button>
+  <button class="nav-btn" onclick="navTo('transactions')">รายการทั้งหมด</button>
+  <button class="nav-btn" onclick="navTo('categories')">หมวดหมู่</button>
+  <button class="nav-btn active" onclick="navTo('settings')">ตั้งค่า</button>
+</nav>
+
+<main>
+  <div class="card">
+    <h2>สำรองข้อมูล</h2>
+    <p>ดาวน์โหลดข้อมูลทั้งหมดเป็นไฟล์ JSON เพื่อเก็บสำรองไว้นอกแอป</p>
+    <button class="btn btn-primary" onclick="exportData()">ดาวน์โหลดสำรอง (JSON)</button>
+  </div>
+
+  <div class="card" style="margin-top:1rem;">
+    <h2>กู้คืนข้อมูล</h2>
+    <p>เลือกไฟล์ JSON ที่สำรองไว้เพื่อกู้คืนข้อมูลทั้งหมด (จะทับข้อมูลปัจจุบัน)</p>
+    <div class="form-group">
+      <label for="importFile">เลือกไฟล์</label>
+      <input type="file" id="importFile" accept=".json" />
+    </div>
+    <button class="btn btn-primary" onclick="importData()">กู้คืนจากไฟล์</button>
+  </div>
+
+  <div class="card" style="margin-top:1rem;">
+    <h2>ล้างข้อมูลทั้งหมด</h2>
+    <p>ลบรายการและหมวดหมู่ทั้งหมด เริ่มต้นใหม่ ตัวเลือกนี้ไม่สามารถกู้คืนได้</p>
+    <button class="btn btn-danger" onclick="clearAllData()">ล้างข้อมูลทั้งหมด</button>
+  </div>
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>

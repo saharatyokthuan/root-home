@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หมวดหมู่ · ฟินานซ์ส่วนตัว</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>หมวดหมู่</h1>
+  <div class="subtitle">จัดการหมวดหมู่รายรับและรายจ่าย</div>
+</header>
+
+<nav class="sidebar">
+  <button class="nav-btn" onclick="navTo('index')">หน้าแรก</button>
+  <button class="nav-btn" onclick="navTo('transactions')">รายการทั้งหมด</button>
+  <button class="nav-btn active" onclick="navTo('categories')">หมวดหมู่</button>
+  <button class="nav-btn" onclick="navTo('settings')">ตั้งค่า</button>
+</nav>
+
+<main>
+  <div class="card">
+    <h2>เพิ่มหมวดหมู่ใหม่</h2>
+    <div class="form-group">
+      <label for="catName">ชื่อหมวดหมู่</label>
+      <input type="text" id="catName" placeholder="เช่น ค่าผ่อนบ้าน, ค่าโทรศัพท์" />
+    </div>
+    <div class="form-group">
+      <label for="catType">ประเภท</label>
+      <select id="catType">
+        <option value="expense">รายจ่าย</option>
+        <option value="income">รายรับ</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="addCat()">เพิ่มหมวดหมู่</button>
+  </div>
+
+  <div class="card">
+    <h2>หมวดหมู่รายรับ</h2>
+    <div id="incomeCats"></div>
+    <h2 style="margin-top:1rem;">หมวดหมู่รายจ่าย</h2>
+    <div id="expenseCats"></div>
+  </div>
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/categories.js"></script>
+</body>
+</html>

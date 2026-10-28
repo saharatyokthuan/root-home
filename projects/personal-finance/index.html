@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สรุปยอดเดือน · ฟินานซ์ส่วนตัว</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1>ฟินานซ์ส่วนตัว</h1>
+  <div class="subtitle">บันทึกรายรับ-รายจ่าย ดูสรุปยอดเดือน</div>
+</header>
+
+<nav class="sidebar">
+  <button class="nav-btn active" onclick="navTo('index')">หน้าแรก</button>
+  <button class="nav-btn" onclick="navTo('transactions')">รายการทั้งหมด</button>
+  <button class="nav-btn" onclick="navTo('categories')">หมวดหมู่</button>
+  <button class="nav-btn" onclick="navTo('settings')">ตั้งค่า</button>
+</nav>
+
+<main>
+  <div class="receipt">
+    <h1>ยอดคงเหลือทั้งหมด</h1>
+    <div class="amount" id="balanceAmt">0.00</div>
+    <div class="sub" id="txCount">0 รายการ</div>
+  </div>
+
+  <div class="grid2">
+    <div class="stat">
+      <div class="label">รายรับเดือนนี้</div>
+      <div class="val type-income" id="mIncome">0.00</div>
+    </div>
+    <div class="stat">
+      <div class="label">รายจ่ายเดือนนี้</div>
+      <div class="val type-expense" id="mExpense">0.00</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>รายการล่าสุด</h2>
+    <div id="recentList"><div class="empty">ยังไม่มีรายการ</div></div>
+    <a href="transactions.html" class="btn btn-primary sm" style="margin-top:10px; width: auto;">ดูทั้งหมด</a>
+  </div>
+</main>
+
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
