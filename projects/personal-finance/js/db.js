@@ -30,23 +30,23 @@ const DB = {
       this._set(this.KEY, {
         transactions: [
           {
-            id: Utils.uid(),
+            id: globalThis.Utils.uid(),
             type: 'income',
             amount: 15000,
             category: 'เงินเดือน',
-            date: Utils.todayStr(),
+            date: globalThis.Utils.todayStr(),
             note: 'เงินเดือนเดือนนี้',
             createdAt: Date.now()
           }
         ],
         categories: [
-          { id: Utils.uid(), name: 'เงินเดือน', type: 'income' },
-          { id: Utils.uid(), name: 'รายรับอื่นๆ', type: 'income' },
-          { id: Utils.uid(), name: 'อาหาร', type: 'expense' },
-          { id: Utils.uid(), name: 'เดินทาง', type: 'expense' },
-          { id: Utils.uid(), name: 'ที่พัก/หอพัก', type: 'expense' },
-          { id: Utils.uid(), name: 'ของใช้ส่วนตัว', type: 'expense' },
-          { id: Utils.uid(), name: 'อื่นๆ', type: 'expense' }
+          { id: globalThis.Utils.uid(), name: 'เงินเดือน', type: 'income' },
+          { id: globalThis.Utils.uid(), name: 'รายรับอื่นๆ', type: 'income' },
+          { id: globalThis.Utils.uid(), name: 'อาหาร', type: 'expense' },
+          { id: globalThis.Utils.uid(), name: 'เดินทาง', type: 'expense' },
+          { id: globalThis.Utils.uid(), name: 'ที่พัก/หอพัก', type: 'expense' },
+          { id: globalThis.Utils.uid(), name: 'ของใช้ส่วนตัว', type: 'expense' },
+          { id: globalThis.Utils.uid(), name: 'อื่นๆ', type: 'expense' }
         ],
         settings: { currency: 'THB' }
       });
@@ -64,7 +64,7 @@ const DB = {
   addTransaction(t) {
     const data = this._get(this.KEY, { transactions: [], categories: [], settings: {} });
     const tx = {
-      id: Utils.uid(),
+      id: globalThis.Utils.uid(),
       createdAt: Date.now(),
       ...t
     };
@@ -87,7 +87,7 @@ const DB = {
 
   addCategory(name, type) {
     const data = this._get(this.KEY, { categories: [] });
-    data.categories.push({ id: Utils.uid(), name, type });
+    data.categories.push({ id: globalThis.Utils.uid(), name, type });
     return this._set(this.KEY, data);
   },
 
@@ -104,7 +104,7 @@ const DB = {
     let income = 0;
     let expense = 0;
     for (const t of txs) {
-      if (Utils.monthKey(t.date) !== monthKey) continue;
+      if (globalThis.Utils.monthKey(t.date) !== monthKey) continue;
       if (t.type === 'income') income += t.amount;
       else if (t.type === 'expense') expense += t.amount;
     }
@@ -112,7 +112,7 @@ const DB = {
   },
 
   currentMonthKey() {
-    return Utils.monthKey(Utils.todayStr());
+    return globalThis.Utils.monthKey(globalThis.Utils.todayStr());
   },
 
   // ---- Settings / backup ----
@@ -145,4 +145,6 @@ const DB = {
   }
 };
 
-DB.init();
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { DB };
+}

@@ -36,8 +36,15 @@ const Utils = {
   // Validate วันที่ YYYY-MM-DD
   isValidDate(dateStr) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
-    const d = new Date(dateStr);
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const d = new Date(year, month - 1, day);
     return d instanceof Date && !isNaN(d) &&
-      d.getFullYear().toString() === dateStr.slice(0, 4);
+      d.getFullYear() === year &&
+      d.getMonth() === month - 1 &&
+      d.getDate() === day;
   }
 };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { Utils };
+}
